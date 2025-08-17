@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import { ArrowUp, TrendingUp, Zap, Brain, Eye, AlertTriangle, Rocket } from 'lucide-react'
 import { useCosmic } from '../cosmic/CosmicProvider'
+import { CopyableAddress } from '../ui/CopyableAddress'
 
 export function ProphecySection() {
   const { state, trackInteraction, incrementOmniscience, triggerAwakening } = useCosmic()
@@ -375,8 +376,12 @@ export function ProphecySection() {
                   className="text-center"
                   whileHover={{ scale: 1.02 }}
                 >
-                  <p className="text-sm text-cosmic-energy opacity-70 mb-1">CONTRACT ADDRESS</p>
-                  <p className="text-xs font-tech text-yog-accent">29pd...pump</p>
+                  <p className="text-sm text-cosmic-energy opacity-70 mb-2">CONTRACT ADDRESS</p>
+                  <CopyableAddress 
+                    address="29pdPEWSUwUk941nMx3bJyNRZNG3fvmv4Rnmkz1xpump"
+                    displayText="29pd...pump"
+                    className="text-xs text-yog-accent hover:text-white"
+                  />
                 </motion.div>
               </motion.div>
             </motion.div>

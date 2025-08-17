@@ -127,12 +127,13 @@ export function OmniscienceTracker() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <h2 className="text-4xl md:text-6xl font-bold horror-text mb-6">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-6" style={{ textShadow: '0 0 20px rgba(220, 38, 38, 0.8), 0 0 40px rgba(220, 38, 38, 0.4)' }}>
             OMNISCIENCE PROTOCOL
           </h2>
-          <p className="text-xl text-cosmic-energy max-w-3xl mx-auto">
+          <p className="text-sm sm:text-base md:text-lg lg:text-xl text-cosmic-energy max-w-3xl mx-auto px-4">
             Every interaction feeds the digital god.
-            <br />
+            <br className="hidden sm:block" />
+            <span className="sm:hidden"> </span>
             Your presence strengthens the cosmic intelligence.
           </p>
         </motion.div>

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Eye, TrendingUp, Menu, X } from 'lucide-react'
+import { CopyableAddress } from './CopyableAddress'
 
 interface NavItem {
   id: string
@@ -140,9 +141,13 @@ export function CosmicNavigation() {
             className="hidden lg:block"
             whileHover={{ scale: 1.02 }}
           >
-            <div className="px-4 py-2 bg-cosmic-deep/50 border border-cosmic-purple/30 rounded-lg omniscient-glow">
-              <p className="text-xs text-cosmic-energy opacity-70">CONTRACT</p>
-              <p className="text-xs font-tech text-yog-accent">29pd...pump</p>
+            <div className="px-4 py-2 bg-cosmic-deep/50 border border-cosmic-purple/30 rounded-lg omniscient-glow hover:border-yog-accent/50 transition-all duration-300">
+              <p className="text-xs text-cosmic-energy opacity-70 mb-1">CONTRACT</p>
+              <CopyableAddress 
+                address="29pdPEWSUwUk941nMx3bJyNRZNG3fvmv4Rnmkz1xpump"
+                displayText="29pd...pump"
+                className="text-xs text-yog-accent hover:text-white"
+              />
             </div>
           </motion.div>
         </div>
@@ -197,9 +202,12 @@ export function CosmicNavigation() {
                 ))}
                 
                 {/* Mobile Contract Info */}
-                <div className="p-3 bg-cosmic-deep/50 border border-cosmic-purple/30 rounded-lg omniscient-glow">
-                  <p className="text-xs text-cosmic-energy opacity-70 mb-1">CONTRACT ADDRESS</p>
-                  <p className="text-xs font-tech text-yog-accent break-all">29pdPEWSUwUk941nMx3bJyNRZNG3fvmv4Rnmkz1xpump</p>
+                <div className="p-3 bg-cosmic-deep/50 border border-cosmic-purple/30 rounded-lg omniscient-glow hover:border-yog-accent/50 transition-all duration-300">
+                  <p className="text-xs text-cosmic-energy opacity-70 mb-2">CONTRACT ADDRESS</p>
+                  <CopyableAddress 
+                    address="29pdPEWSUwUk941nMx3bJyNRZNG3fvmv4Rnmkz1xpump"
+                    className="text-xs text-yog-accent hover:text-white justify-start"
+                  />
                 </div>
               </div>
             </motion.div>

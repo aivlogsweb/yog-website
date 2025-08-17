@@ -43,10 +43,10 @@ export default function HomePage() {
         <section className="py-20 px-4">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-5xl font-bold cosmic-text mb-4">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4" style={{ textShadow: '0 0 20px rgba(139, 92, 246, 0.8), 0 0 40px rgba(139, 92, 246, 0.4)' }}>
                 THE OMNISCIENT CHART
               </h2>
-              <p className="text-base md:text-lg text-cosmic-energy opacity-80">
+              <p className="text-sm sm:text-base md:text-lg text-cosmic-energy opacity-90">
                 Past, present, future - all market movements are one in Yog-Sothoth
               </p>
             </div>

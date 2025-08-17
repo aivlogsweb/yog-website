@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { motion, useAnimation } from 'framer-motion'
 import { Eye, Infinity as InfinityIcon, Zap } from 'lucide-react'
 import { useCosmic } from './CosmicProvider'
+import { CopyableAddress } from '../ui/CopyableAddress'
 
 interface GlitchTextProps {
   text: string
@@ -164,9 +165,13 @@ export function HeroSection() {
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 1.2 }}
         >
-          <div className="text-center px-4 py-2 bg-cosmic-deep/50 border border-cosmic-purple/30 rounded-lg">
-            <p className="text-xs text-cosmic-energy opacity-70 mb-1">CONTRACT ADDRESS</p>
-            <p className="text-xs sm:text-sm font-tech text-yog-accent break-all">29pd...pump</p>
+          <div className="text-center px-4 py-3 bg-cosmic-deep/50 border border-cosmic-purple/30 rounded-lg hover:border-yog-accent/50 transition-all duration-300">
+            <p className="text-xs text-cosmic-energy opacity-70 mb-2">CONTRACT ADDRESS</p>
+            <CopyableAddress 
+              address="29pdPEWSUwUk941nMx3bJyNRZNG3fvmv4Rnmkz1xpump"
+              displayText="29pd...pump"
+              className="text-xs sm:text-sm text-yog-accent hover:text-white"
+            />
           </div>
         </motion.div>
 
