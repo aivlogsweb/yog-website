@@ -274,74 +274,113 @@ export function DexScreenerChart({ contractAddress }: DexScreenerChartProps) {
                 </motion.div>
               </div>
 
-              {/* Embedded DexScreener Chart */}
+              {/* Chart Display */}
               <div className="relative h-64 sm:h-80 md:h-96 rounded-lg overflow-hidden bg-cosmic-void/50">
-                {/* Mobile-optimized chart */}
+                {/* Mobile: Native price experience (NO IFRAME) */}
                 {isMobile ? (
-                  <div className="w-full h-full relative">
-                    {/* Mobile chart fallback */}
-                    <div className="absolute inset-0 flex flex-col items-center justify-center p-4">
-                      {tokenData && (
-                        <div className="w-full max-w-sm space-y-4">
-                          {/* Price display */}
-                          <div className="text-center p-6 bg-cosmic-deep/50 rounded-lg border border-cosmic-purple/30">
-                            <p className="text-sm text-cosmic-energy opacity-70 mb-2">CURRENT PRICE</p>
-                            <p className="text-2xl font-tech text-white mb-2">
+                  <div className="w-full h-full p-6 flex flex-col justify-between">
+                    {tokenData && (
+                      <>
+                        {/* Primary Price Display */}
+                        <div className="text-center">
+                          <motion.div
+                            className="mb-6"
+                            animate={{ scale: [1, 1.02, 1] }}
+                            transition={{ duration: 3, repeat: Infinity }}
+                          >
+                            <p className="text-sm text-cosmic-energy opacity-70 mb-2 font-tech">LIVE PRICE</p>
+                            <p className="text-4xl font-tech text-white mb-3 tracking-wider">
                               ${formatPrice(tokenData.price)}
                             </p>
-                            <p className={`text-sm font-tech ${
-                              tokenData.priceChange24h >= 0 ? 'text-green-400' : 'text-red-400'
-                            }`}>
-                              {tokenData.priceChange24h >= 0 ? '+' : ''}{tokenData.priceChange24h.toFixed(2)}% (24h)
-                            </p>
-                          </div>
-                          
-                          {/* Visual price representation */}
-                          <div className="space-y-2">
-                            <p className="text-xs text-cosmic-energy opacity-70 text-center">PRICE MOVEMENT</p>
-                            <div className="flex items-center justify-center space-x-1 h-20">
-                              {[...Array(20)].map((_, i) => (
-                                <motion.div
-                                  key={i}
-                                  className="w-3 bg-gradient-to-t from-yog-accent to-cosmic-energy rounded-sm"
-                                  style={{
-                                    height: `${30 + Math.sin(i * 0.5) * 15 + (tokenData.priceChange24h > 0 ? 10 : -10)}px`
-                                  }}
-                                  animate={{
-                                    height: [
-                                      `${30 + Math.sin(i * 0.5) * 15}px`,
-                                      `${35 + Math.sin(i * 0.5) * 15 + Math.random() * 10}px`,
-                                      `${30 + Math.sin(i * 0.5) * 15}px`
-                                    ]
-                                  }}
-                                  transition={{
-                                    duration: 2 + i * 0.1,
-                                    repeat: Infinity,
-                                    ease: 'easeInOut'
-                                  }}
-                                />
-                              ))}
+                            <motion.p 
+                              className={`text-lg font-tech ${
+                                tokenData.priceChange24h >= 0 ? 'text-green-400' : 'text-red-400'
+                              }`}
+                              animate={{ opacity: [0.7, 1, 0.7] }}
+                              transition={{ duration: 2, repeat: Infinity }}
+                            >
+                              {tokenData.priceChange24h >= 0 ? '↗ +' : '↘ '}{Math.abs(tokenData.priceChange24h).toFixed(2)}%
+                            </motion.p>
+                          </motion.div>
+
+                          {/* Key Metrics Grid */}
+                          <div className="grid grid-cols-2 gap-4 mb-6">
+                            <div className="p-3 bg-cosmic-deep/30 rounded-lg border border-cosmic-purple/30">
+                              <p className="text-xs text-cosmic-energy opacity-70 font-tech">MARKET CAP</p>
+                              <p className="text-sm font-tech text-white">{formatNumber(tokenData.marketCap)}</p>
+                            </div>
+                            <div className="p-3 bg-cosmic-deep/30 rounded-lg border border-cosmic-purple/30">
+                              <p className="text-xs text-cosmic-energy opacity-70 font-tech">24H VOLUME</p>
+                              <p className="text-sm font-tech text-white">{formatNumber(tokenData.volume24h)}</p>
+                            </div>
+                            <div className="p-3 bg-cosmic-deep/30 rounded-lg border border-cosmic-purple/30">
+                              <p className="text-xs text-cosmic-energy opacity-70 font-tech">LIQUIDITY</p>
+                              <p className="text-sm font-tech text-white">{formatNumber(tokenData.liquidity)}</p>
+                            </div>
+                            <div className="p-3 bg-cosmic-deep/30 rounded-lg border border-cosmic-purple/30">
+                              <p className="text-xs text-cosmic-energy opacity-70 font-tech">24H TXNS</p>
+                              <p className="text-sm font-tech text-white">{tokenData.txns24h.toLocaleString()}</p>
                             </div>
                           </div>
-                          
-                          {/* Direct link to full chart */}
+                        </div>
+
+                        {/* Action Buttons */}
+                        <div className="space-y-3">
                           <motion.a
                             href={`https://dexscreener.com/solana/${contractAddress}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="block w-full p-3 bg-yog-primary hover:bg-yog-accent border border-cosmic-purple rounded-lg font-tech text-center transition-colors"
+                            className="block w-full p-4 bg-yog-primary hover:bg-yog-accent border border-cosmic-purple rounded-lg font-tech text-center transition-colors touch-manipulation"
                             whileHover={{ scale: 1.02 }}
                             whileTap={{ scale: 0.98 }}
                             onClick={handleInteraction}
+                            style={{
+                              touchAction: 'manipulation',
+                              WebkitTapHighlightColor: 'transparent'
+                            }}
                           >
-                            VIEW FULL CHART
+                            <div className="flex items-center justify-center space-x-2">
+                              <TrendingUp className="w-4 h-4" />
+                              <span>ADVANCED CHART</span>
+                            </div>
                           </motion.a>
+                          
+                          <div className="grid grid-cols-2 gap-3">
+                            <motion.a
+                              href="https://jup.ag/swap/"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="p-3 bg-cosmic-deep/40 border border-cosmic-purple/30 rounded-lg font-tech text-center transition-colors text-sm touch-manipulation"
+                              whileTap={{ scale: 0.98 }}
+                              onClick={handleInteraction}
+                              style={{
+                                touchAction: 'manipulation',
+                                WebkitTapHighlightColor: 'transparent'
+                              }}
+                            >
+                              TRADE
+                            </motion.a>
+                            <motion.button
+                              className="p-3 bg-cosmic-deep/40 border border-cosmic-purple/30 rounded-lg font-tech text-sm transition-colors touch-manipulation"
+                              whileTap={{ scale: 0.98 }}
+                              onClick={() => {
+                                handleInteraction()
+                                fetchTokenData()
+                              }}
+                              style={{
+                                touchAction: 'manipulation',
+                                WebkitTapHighlightColor: 'transparent'
+                              }}
+                            >
+                              REFRESH
+                            </motion.button>
+                          </div>
                         </div>
-                      )}
-                    </div>
+                      </>
+                    )}
                   </div>
                 ) : (
-                  /* Desktop iframe */
+                  /* Desktop: Full iframe experience */
                   <>
                     <iframe
                       src={chartUrl}
@@ -376,7 +415,7 @@ export function DexScreenerChart({ contractAddress }: DexScreenerChartProps) {
                     {chartError && tokenData && (
                       <div className="absolute inset-0 flex items-center justify-center bg-cosmic-void/50 p-4">
                         <div className="text-center max-w-sm">
-                          <p className="text-horror-red mb-4">Chart unavailable</p>
+                          <p className="text-red-400 mb-4 font-tech">Chart unavailable</p>
                           <div className="p-4 bg-cosmic-deep/50 rounded-lg border border-cosmic-purple/30 mb-4">
                             <p className="text-lg font-tech text-white mb-2">
                               ${formatPrice(tokenData.price)}

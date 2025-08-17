@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Creepster&family=Nosifer&family=Butcherman&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&family=Space+Mono:wght@400;700&display=swap');
 
 :root {
   --cosmic-void: #000000;
@@ -49,20 +49,27 @@ body {
   background: var(--yog-accent);
 }
 
-/* Cosmic horror text effects */
+/* Cosmic horror text effects - Mobile optimized */
 .cosmic-text {
-  font-family: 'Creepster', cursive;
-  text-shadow: 0 0 10px var(--yog-accent), 0 0 20px var(--yog-accent), 0 0 30px var(--yog-accent);
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  text-shadow: 0 0 8px var(--yog-accent), 0 0 16px var(--yog-accent);
+  letter-spacing: 0.05em;
 }
 
 .horror-text {
-  font-family: 'Nosifer', cursive;
-  text-shadow: 0 0 5px #dc2626, 0 0 10px #dc2626;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  text-shadow: 0 0 4px #dc2626, 0 0 8px #dc2626;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
 }
 
 .tech-text {
-  font-family: 'Courier New', monospace;
-  text-shadow: 0 0 5px #00ff00;
+  font-family: 'Space Mono', monospace;
+  font-weight: 400;
+  text-shadow: 0 0 4px #00ff00;
+  letter-spacing: 0.02em;
 }
 
 .glitch-text {
@@ -176,6 +183,29 @@ body {
       0 0 40px rgba(139, 92, 246, 0.4),
       0 0 60px rgba(139, 92, 246, 0.2),
       inset 0 0 20px rgba(139, 92, 246, 0.2);
+  }
+}
+
+/* Mobile font optimizations */
+@media (max-width: 768px) {
+  .cosmic-text {
+    text-shadow: 0 0 4px var(--yog-accent), 0 0 8px var(--yog-accent);
+    font-weight: 600;
+  }
+
+  .horror-text {
+    text-shadow: 0 0 2px #dc2626, 0 0 4px #dc2626;
+    font-weight: 600;
+  }
+
+  .tech-text {
+    text-shadow: 0 0 2px #00ff00;
+  }
+
+  /* Reduce reality distortion on mobile for readability */
+  .reality-distortion {
+    animation: none;
+    filter: none;
   }
 }
 
