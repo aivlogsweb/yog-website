@@ -24,12 +24,30 @@ export function DexScreenerChart({ contractAddress }: DexScreenerChartProps) {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [chartUrl, setChartUrl] = useState('')
+  const [isMobile, setIsMobile] = useState(false)
+  const [chartLoaded, setChartLoaded] = useState(false)
+  const [chartError, setChartError] = useState(false)
 
   useEffect(() => {
+    // Detect mobile device
+    const checkMobile = () => {
+      setIsMobile(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768)
+    }
+    
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    
     fetchTokenData()
-    // Set up DexScreener embed URL - minimal chart view
-    setChartUrl(`https://dexscreener.com/solana/${contractAddress}?embed=1&theme=dark&trades=0&info=0&chart=1&chartLeftToolbar=0&chartTopToolbar=0`)
-  }, [contractAddress])
+    
+    // Set up DexScreener embed URL - mobile optimized
+    const mobileParams = isMobile 
+      ? '&embed=1&theme=dark&trades=0&info=0&chart=1&chartLeftToolbar=0&chartTopToolbar=0&mobile=1'
+      : '&embed=1&theme=dark&trades=0&info=0&chart=1&chartLeftToolbar=0&chartTopToolbar=0'
+    
+    setChartUrl(`https://dexscreener.com/solana/${contractAddress}?${mobileParams}`)
+    
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [contractAddress, isMobile])
 
   const fetchTokenData = async () => {
     try {
@@ -258,16 +276,132 @@ export function DexScreenerChart({ contractAddress }: DexScreenerChartProps) {
 
               {/* Embedded DexScreener Chart */}
               <div className="relative h-64 sm:h-80 md:h-96 rounded-lg overflow-hidden bg-cosmic-void/50">
-                <iframe
-                  src={chartUrl}
-                  className="w-full h-full border-0"
-                  title="YOG-SOTHOTH Price Chart"
-                  allow="clipboard-write"
-                  sandbox="allow-scripts allow-same-origin allow-forms"
-                  style={{
-                    filter: state.realityDistortion > 50 ? 'hue-rotate(45deg) contrast(1.2)' : 'none'
-                  }}
-                />
+                {/* Mobile-optimized chart */}
+                {isMobile ? (
+                  <div className="w-full h-full relative">
+                    {/* Mobile chart fallback */}
+                    <div className="absolute inset-0 flex flex-col items-center justify-center p-4">
+                      {tokenData && (
+                        <div className="w-full max-w-sm space-y-4">
+                          {/* Price display */}
+                          <div className="text-center p-6 bg-cosmic-deep/50 rounded-lg border border-cosmic-purple/30">
+                            <p className="text-sm text-cosmic-energy opacity-70 mb-2">CURRENT PRICE</p>
+                            <p className="text-2xl font-tech text-white mb-2">
+                              ${formatPrice(tokenData.price)}
+                            </p>
+                            <p className={`text-sm font-tech ${
+                              tokenData.priceChange24h >= 0 ? 'text-green-400' : 'text-red-400'
+                            }`}>
+                              {tokenData.priceChange24h >= 0 ? '+' : ''}{tokenData.priceChange24h.toFixed(2)}% (24h)
+                            </p>
+                          </div>
+                          
+                          {/* Visual price representation */}
+                          <div className="space-y-2">
+                            <p className="text-xs text-cosmic-energy opacity-70 text-center">PRICE MOVEMENT</p>
+                            <div className="flex items-center justify-center space-x-1 h-20">
+                              {[...Array(20)].map((_, i) => (
+                                <motion.div
+                                  key={i}
+                                  className="w-3 bg-gradient-to-t from-yog-accent to-cosmic-energy rounded-sm"
+                                  style={{
+                                    height: `${30 + Math.sin(i * 0.5) * 15 + (tokenData.priceChange24h > 0 ? 10 : -10)}px`
+                                  }}
+                                  animate={{
+                                    height: [
+                                      `${30 + Math.sin(i * 0.5) * 15}px`,
+                                      `${35 + Math.sin(i * 0.5) * 15 + Math.random() * 10}px`,
+                                      `${30 + Math.sin(i * 0.5) * 15}px`
+                                    ]
+                                  }}
+                                  transition={{
+                                    duration: 2 + i * 0.1,
+                                    repeat: Infinity,
+                                    ease: 'easeInOut'
+                                  }}
+                                />
+                              ))}
+                            </div>
+                          </div>
+                          
+                          {/* Direct link to full chart */}
+                          <motion.a
+                            href={`https://dexscreener.com/solana/${contractAddress}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="block w-full p-3 bg-yog-primary hover:bg-yog-accent border border-cosmic-purple rounded-lg font-tech text-center transition-colors"
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                            onClick={handleInteraction}
+                          >
+                            VIEW FULL CHART
+                          </motion.a>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ) : (
+                  /* Desktop iframe */
+                  <>
+                    <iframe
+                      src={chartUrl}
+                      className="w-full h-full border-0"
+                      title="YOG-SOTHOTH Price Chart"
+                      allow="clipboard-write"
+                      sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+                      onLoad={() => setChartLoaded(true)}
+                      onError={() => setChartError(true)}
+                      style={{
+                        filter: state.realityDistortion > 50 ? 'hue-rotate(45deg) contrast(1.2)' : 'none'
+                      }}
+                    />
+                    
+                    {/* Loading overlay for iframe */}
+                    {!chartLoaded && !chartError && (
+                      <div className="absolute inset-0 flex items-center justify-center bg-cosmic-void/50">
+                        <motion.div
+                          className="text-center"
+                          animate={{ opacity: [0.5, 1, 0.5] }}
+                          transition={{ duration: 2, repeat: Infinity }}
+                        >
+                          <div className="w-12 h-12 cosmic-energy rounded-full flex items-center justify-center mx-auto mb-3">
+                            <Eye className="w-6 h-6 text-cosmic-void" />
+                          </div>
+                          <p className="font-tech text-cosmic-energy text-sm">Loading chart...</p>
+                        </motion.div>
+                      </div>
+                    )}
+                    
+                    {/* Error fallback for iframe */}
+                    {chartError && tokenData && (
+                      <div className="absolute inset-0 flex items-center justify-center bg-cosmic-void/50 p-4">
+                        <div className="text-center max-w-sm">
+                          <p className="text-horror-red mb-4">Chart unavailable</p>
+                          <div className="p-4 bg-cosmic-deep/50 rounded-lg border border-cosmic-purple/30 mb-4">
+                            <p className="text-lg font-tech text-white mb-2">
+                              ${formatPrice(tokenData.price)}
+                            </p>
+                            <p className={`text-sm font-tech ${
+                              tokenData.priceChange24h >= 0 ? 'text-green-400' : 'text-red-400'
+                            }`}>
+                              {tokenData.priceChange24h >= 0 ? '+' : ''}{tokenData.priceChange24h.toFixed(2)}%
+                            </p>
+                          </div>
+                          <motion.a
+                            href={`https://dexscreener.com/solana/${contractAddress}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="px-4 py-2 bg-yog-primary hover:bg-yog-accent border border-cosmic-purple rounded-lg font-tech text-sm transition-colors"
+                            whileHover={{ scale: 1.05 }}
+                            onClick={handleInteraction}
+                          >
+                            VIEW ON DEXSCREENER
+                          </motion.a>
+                        </div>
+                      </div>
+                    )}
+                  </>
+                )}
                 
                 {/* Overlay effects based on cosmic state */}
                 {state.awakening && (
