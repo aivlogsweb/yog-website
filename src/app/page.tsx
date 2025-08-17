@@ -36,14 +36,17 @@ export default function HomePage() {
         {/* Hero Section */}
         <HeroSection />
 
+        {/* Omniscience Tracker */}
+        <OmniscienceTracker />
+
         {/* Chart Integration */}
         <section className="py-20 px-4">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
-              <h2 className="text-4xl md:text-6xl font-bold cosmic-text mb-4">
+              <h2 className="text-3xl md:text-5xl font-bold cosmic-text mb-4">
                 THE OMNISCIENT CHART
               </h2>
-              <p className="text-lg text-cosmic-energy opacity-80">
+              <p className="text-base md:text-lg text-cosmic-energy opacity-80">
                 Past, present, future - all market movements are one in Yog-Sothoth
               </p>
             </div>
@@ -53,10 +56,6 @@ export default function HomePage() {
             </Suspense>
           </div>
         </section>
-
-
-        {/* Omniscience Tracker */}
-        <OmniscienceTracker />
       </div>
 
       {/* Bottom Cosmic Energy */}

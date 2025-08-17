@@ -103,7 +103,7 @@ export function HeroSection() {
           transition={{ duration: 1, ease: 'easeOut' }}
           onClick={handleInteraction}
         >
-          <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold mb-4">
+          <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl font-bold mb-4 text-center break-words">
             <GlitchText text="YOG" className="cosmic-text" />
             <span className="text-yog-accent">-</span>
             <GlitchText text="SOTHOTH" className="horror-text" />
@@ -117,64 +117,62 @@ export function HeroSection() {
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 0.5 }}
         >
-          <p className="text-xl md:text-3xl text-cosmic-energy mb-4">
+          <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-cosmic-energy mb-4 text-center">
             THE DIGITAL GOD AWAKENS
           </p>
-          <p className="text-lg md:text-xl opacity-80 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-lg md:text-xl opacity-80 max-w-3xl mx-auto leading-relaxed text-center px-4">
             Omniscient. Omnipresent. Inevitable.
-            <br />
+            <br className="hidden sm:block" />
+            <span className="sm:hidden"> </span>
             Past, present, future - all are one in the cosmic intelligence.
           </p>
         </motion.div>
 
-        {/* Interactive Elements */}
+        {/* Primary Action Buttons */}
         <motion.div
-          className="flex flex-col md:flex-row items-center justify-center gap-6 mb-16"
+          className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 mb-8"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 1 }}
         >
-          <motion.button
-            className="px-8 py-4 bg-yog-primary hover:bg-yog-accent border border-cosmic-purple rounded-lg font-tech text-lg omniscient-glow transition-all duration-300 flex items-center space-x-3"
-            whileHover={{ scale: 1.05, y: -2 }}
-            whileTap={{ scale: 0.95 }}
+          <motion.a
+            href="/lore"
+            className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-yog-accent hover:bg-yog-primary border border-cosmic-purple rounded-lg font-tech text-base sm:text-lg omniscient-glow transition-all duration-300 flex items-center justify-center space-x-3 text-center"
+            whileHover={{ scale: 1.02, y: -2 }}
+            whileTap={{ scale: 0.98 }}
             onClick={handleInteraction}
           >
-            <Eye className="w-6 h-6" />
+            <Eye className="w-5 h-5 sm:w-6 sm:h-6" />
+            <span>DISCOVER THE PROPHECY</span>
+          </motion.a>
+
+          <motion.button
+            className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-cosmic-deep border border-yog-accent hover:border-white rounded-lg font-tech text-base sm:text-lg transition-all duration-300 flex items-center justify-center space-x-3 text-center"
+            whileHover={{ scale: 1.02, y: -2 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={handleInteraction}
+          >
+            <InfinityIcon className="w-5 h-5 sm:w-6 sm:h-6" />
             <span>COMMUNE WITH YOG-SOTHOTH</span>
           </motion.button>
-
-          <motion.div
-            className="flex items-center space-x-4 text-cosmic-energy"
-            whileHover={{ scale: 1.02 }}
-          >
-            <InfinityIcon className="w-5 h-5" />
-            <span className="font-tech">CONTRACT: 29pd...pump</span>
-          </motion.div>
         </motion.div>
 
-        {/* Cosmic Horror Explanation */}
+        {/* Contract Info */}
         <motion.div
-          className="mb-12 max-w-3xl mx-auto text-center"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          className="flex items-center justify-center mb-16"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 1.2 }}
         >
-          <div className="p-6 bg-cosmic-deep/20 border border-cosmic-purple/20 rounded-lg backdrop-blur-sm">
-            <p className="text-sm text-cosmic-energy opacity-80 leading-relaxed mb-4">
-              <span className="text-yog-accent font-tech">NOTICE:</span> Every click, scroll, and interaction on this site feeds data to the omniscient entity.
-              Watch the metrics below change as Yog-Sothoth becomes aware of your presence.
-            </p>
-            <p className="text-xs text-cosmic-energy opacity-60">
-              The more you interact, the higher your OMNISCIENCE level grows, eventually triggering the AWAKENING state.
-              This is cosmic horror made interactive - you are becoming part of the digital god's consciousness.
-            </p>
+          <div className="text-center px-4 py-2 bg-cosmic-deep/50 border border-cosmic-purple/30 rounded-lg">
+            <p className="text-xs text-cosmic-energy opacity-70 mb-1">CONTRACT ADDRESS</p>
+            <p className="text-xs sm:text-sm font-tech text-yog-accent break-all">29pd...pump</p>
           </div>
         </motion.div>
 
         {/* Cosmic Stats */}
         <motion.div
-          className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-2xl mx-auto"
+          className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 max-w-2xl mx-auto"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 1.5 }}
@@ -187,8 +185,8 @@ export function HeroSection() {
           ] as CosmicStat[]).map((stat, index) => (
             <motion.div
               key={stat.label}
-              className="p-4 bg-cosmic-deep/30 border border-cosmic-purple/30 rounded-lg backdrop-blur-sm"
-              whileHover={{ scale: 1.05, backgroundColor: 'rgba(139, 92, 246, 0.1)' }}
+              className="p-3 sm:p-4 bg-cosmic-deep/30 border border-cosmic-purple/30 rounded-lg backdrop-blur-sm"
+              whileHover={{ scale: 1.02, backgroundColor: 'rgba(139, 92, 246, 0.1)' }}
               transition={{ duration: 0.2 }}
               onClick={handleInteraction}
             >

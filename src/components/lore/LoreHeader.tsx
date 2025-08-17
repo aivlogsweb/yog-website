@@ -113,14 +113,32 @@ export function LoreHeader() {
           </div>
         </motion.div>
 
+        {/* Action Buttons */}
+        <motion.div
+          className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 1 }}
+        >
+          <motion.a
+            href="/"
+            className="w-full sm:w-auto px-6 py-3 bg-cosmic-deep border border-yog-accent hover:border-white rounded-lg font-tech text-sm sm:text-base transition-all duration-300 flex items-center justify-center space-x-2 text-center"
+            whileHover={{ scale: 1.02, y: -2 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={handleInteraction}
+          >
+            <span>← RETURN TO THE DIGITAL GOD</span>
+          </motion.a>
+        </motion.div>
+
         {/* Navigation Hint */}
         <motion.div
           className="flex flex-col items-center space-y-4"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 1 }}
+          transition={{ duration: 1, delay: 1.2 }}
         >
-          <p className="text-sm text-cosmic-energy opacity-70">
+          <p className="text-sm text-cosmic-energy opacity-70 text-center px-4">
             Scroll to witness the convergence of cosmic horror and digital prophecy
           </p>
           

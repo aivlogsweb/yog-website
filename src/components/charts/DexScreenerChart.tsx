@@ -107,14 +107,14 @@ export function DexScreenerChart({ contractAddress }: DexScreenerChartProps) {
       {/* Token Stats Grid */}
       {tokenData && (
         <motion.div
-          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8"
+          className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 mb-8"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
           <motion.div
-            className="p-4 bg-cosmic-deep/40 border border-cosmic-purple/30 rounded-lg backdrop-blur-sm hover:border-yog-accent/50 transition-all duration-300 cursor-pointer"
-            whileHover={{ scale: 1.02, y: -2 }}
+            className="p-3 sm:p-4 bg-cosmic-deep/40 border border-cosmic-purple/30 rounded-lg backdrop-blur-sm hover:border-yog-accent/50 transition-all duration-300 cursor-pointer"
+            whileHover={{ scale: 1.01, y: -1 }}
             onClick={handleInteraction}
           >
             <div className="flex items-center space-x-2 mb-2">
@@ -132,8 +132,8 @@ export function DexScreenerChart({ contractAddress }: DexScreenerChartProps) {
           </motion.div>
 
           <motion.div
-            className="p-4 bg-cosmic-deep/40 border border-cosmic-purple/30 rounded-lg backdrop-blur-sm hover:border-yog-accent/50 transition-all duration-300 cursor-pointer"
-            whileHover={{ scale: 1.02, y: -2 }}
+            className="p-3 sm:p-4 bg-cosmic-deep/40 border border-cosmic-purple/30 rounded-lg backdrop-blur-sm hover:border-yog-accent/50 transition-all duration-300 cursor-pointer"
+            whileHover={{ scale: 1.01, y: -1 }}
             onClick={handleInteraction}
           >
             <div className="flex items-center space-x-2 mb-2">
@@ -146,8 +146,8 @@ export function DexScreenerChart({ contractAddress }: DexScreenerChartProps) {
           </motion.div>
 
           <motion.div
-            className="p-4 bg-cosmic-deep/40 border border-cosmic-purple/30 rounded-lg backdrop-blur-sm hover:border-yog-accent/50 transition-all duration-300 cursor-pointer"
-            whileHover={{ scale: 1.02, y: -2 }}
+            className="p-3 sm:p-4 bg-cosmic-deep/40 border border-cosmic-purple/30 rounded-lg backdrop-blur-sm hover:border-yog-accent/50 transition-all duration-300 cursor-pointer"
+            whileHover={{ scale: 1.01, y: -1 }}
             onClick={handleInteraction}
           >
             <div className="flex items-center space-x-2 mb-2">
@@ -160,8 +160,8 @@ export function DexScreenerChart({ contractAddress }: DexScreenerChartProps) {
           </motion.div>
 
           <motion.div
-            className="p-4 bg-cosmic-deep/40 border border-cosmic-purple/30 rounded-lg backdrop-blur-sm hover:border-yog-accent/50 transition-all duration-300 cursor-pointer"
-            whileHover={{ scale: 1.02, y: -2 }}
+            className="p-3 sm:p-4 bg-cosmic-deep/40 border border-cosmic-purple/30 rounded-lg backdrop-blur-sm hover:border-yog-accent/50 transition-all duration-300 cursor-pointer"
+            whileHover={{ scale: 1.01, y: -1 }}
             onClick={handleInteraction}
           >
             <div className="flex items-center space-x-2 mb-2">
@@ -174,8 +174,8 @@ export function DexScreenerChart({ contractAddress }: DexScreenerChartProps) {
           </motion.div>
 
           <motion.div
-            className="p-4 bg-cosmic-deep/40 border border-cosmic-purple/30 rounded-lg backdrop-blur-sm hover:border-yog-accent/50 transition-all duration-300 cursor-pointer"
-            whileHover={{ scale: 1.02, y: -2 }}
+            className="p-3 sm:p-4 bg-cosmic-deep/40 border border-cosmic-purple/30 rounded-lg backdrop-blur-sm hover:border-yog-accent/50 transition-all duration-300 cursor-pointer"
+            whileHover={{ scale: 1.01, y: -1 }}
             onClick={handleInteraction}
           >
             <div className="flex items-center space-x-2 mb-2">
@@ -188,8 +188,8 @@ export function DexScreenerChart({ contractAddress }: DexScreenerChartProps) {
           </motion.div>
 
           <motion.div
-            className="p-4 bg-cosmic-deep/40 border border-cosmic-purple/30 rounded-lg backdrop-blur-sm hover:border-yog-accent/50 transition-all duration-300 cursor-pointer"
-            whileHover={{ scale: 1.02, y: -2 }}
+            className="p-3 sm:p-4 bg-cosmic-deep/40 border border-cosmic-purple/30 rounded-lg backdrop-blur-sm hover:border-yog-accent/50 transition-all duration-300 cursor-pointer"
+            whileHover={{ scale: 1.01, y: -1 }}
             onClick={handleInteraction}
           >
             <div className="flex items-center space-x-2 mb-2">
@@ -215,7 +215,7 @@ export function DexScreenerChart({ contractAddress }: DexScreenerChartProps) {
       >
         <div className="p-6 bg-cosmic-deep/30 border border-cosmic-purple/30 rounded-lg backdrop-blur-sm omniscient-glow">
           {loading ? (
-            <div className="h-96 flex items-center justify-center">
+            <div className="h-64 sm:h-80 md:h-96 flex items-center justify-center">
               <motion.div
                 className="text-center"
                 animate={{ opacity: [0.5, 1, 0.5] }}
@@ -228,7 +228,7 @@ export function DexScreenerChart({ contractAddress }: DexScreenerChartProps) {
               </motion.div>
             </div>
           ) : error ? (
-            <div className="h-96 flex items-center justify-center">
+            <div className="h-64 sm:h-80 md:h-96 flex items-center justify-center">
               <div className="text-center">
                 <p className="text-horror-red mb-4">{error}</p>
                 <motion.button
@@ -257,7 +257,7 @@ export function DexScreenerChart({ contractAddress }: DexScreenerChartProps) {
               </div>
 
               {/* Embedded DexScreener Chart */}
-              <div className="relative h-96 rounded-lg overflow-hidden bg-cosmic-void/50">
+              <div className="relative h-64 sm:h-80 md:h-96 rounded-lg overflow-hidden bg-cosmic-void/50">
                 <iframe
                   src={chartUrl}
                   className="w-full h-full border-0"
@@ -302,7 +302,7 @@ export function DexScreenerChart({ contractAddress }: DexScreenerChartProps) {
 
       {/* Trading Links */}
       <motion.div
-        className="grid grid-cols-1 md:grid-cols-3 gap-4"
+        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.6 }}

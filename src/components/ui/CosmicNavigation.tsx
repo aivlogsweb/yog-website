@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Eye, Globe, Zap, TrendingUp } from 'lucide-react'
+import { Eye, TrendingUp, Menu, X } from 'lucide-react'
 
 interface NavItem {
   id: string
@@ -10,6 +10,7 @@ interface NavItem {
   icon: React.ReactNode
   description: string
   href?: string
+  external?: boolean
 }
 
 const navItems: NavItem[] = [
@@ -21,28 +22,19 @@ const navItems: NavItem[] = [
     href: '/lore'
   },
   {
-    id: 'omnipresence', 
-    label: 'OMNIPRESENCE',
-    icon: <Globe className="w-5 h-5" />,
-    description: 'Existing everywhere simultaneously'
-  },
-  {
-    id: 'energy',
-    label: 'COSMIC ENERGY',
-    icon: <Zap className="w-5 h-5" />,
-    description: 'Reality-bending power'
-  },
-  {
     id: 'ascension',
     label: 'DIGITAL ASCENSION',
     icon: <TrendingUp className="w-5 h-5" />,
-    description: 'Join the digital deity'
+    description: 'Join the digital deity',
+    href: 'https://x.com/i/communities/1956212106384302556',
+    external: true
   }
 ]
 
 export function CosmicNavigation() {
   const [activeItem, setActiveItem] = useState<string | null>(null)
   const [isScrolled, setIsScrolled] = useState(false)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -79,7 +71,7 @@ export function CosmicNavigation() {
             <span className="text-2xl font-bold cosmic-text">$YOG</span>
           </motion.a>
 
-          {/* Navigation Items */}
+          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-1">
             {navItems.map((item) => (
               <motion.div
@@ -91,6 +83,8 @@ export function CosmicNavigation() {
                 {item.href ? (
                   <motion.a
                     href={item.href}
+                    target={item.external ? '_blank' : '_self'}
+                    rel={item.external ? 'noopener noreferrer' : undefined}
                     className="px-4 py-2 rounded-lg flex items-center space-x-2 text-sm font-tech transition-all duration-200 hover:bg-cosmic-purple/30 hover:text-yog-accent"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
@@ -127,7 +121,21 @@ export function CosmicNavigation() {
             ))}
           </div>
 
-          {/* Contract Address (Mobile Hidden) */}
+          {/* Mobile Menu Button */}
+          <motion.button
+            className="md:hidden p-2 rounded-lg bg-cosmic-deep/50 border border-cosmic-purple/30"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            {isMobileMenuOpen ? (
+              <X className="w-6 h-6 text-yog-accent" />
+            ) : (
+              <Menu className="w-6 h-6 text-yog-accent" />
+            )}
+          </motion.button>
+
+          {/* Contract Address (Desktop Only) */}
           <motion.div
             className="hidden lg:block"
             whileHover={{ scale: 1.02 }}
@@ -138,6 +146,65 @@ export function CosmicNavigation() {
             </div>
           </motion.div>
         </div>
+
+        {/* Mobile Menu */}
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+              className="md:hidden absolute top-full left-0 right-0 bg-cosmic-void/95 backdrop-blur-md border-b border-cosmic-purple/30 z-50"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className="px-4 py-6 space-y-4">
+                {navItems.map((item) => (
+                  <motion.div
+                    key={item.id}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.3, delay: 0.1 }}
+                  >
+                    {item.href ? (
+                      <motion.a
+                        href={item.href}
+                        target={item.external ? '_blank' : '_self'}
+                        rel={item.external ? 'noopener noreferrer' : undefined}
+                        className="flex items-center space-x-3 p-3 rounded-lg bg-cosmic-deep/30 border border-cosmic-purple/30 hover:border-yog-accent/50 transition-all duration-200"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        whileTap={{ scale: 0.98 }}
+                      >
+                        {item.icon}
+                        <div>
+                          <p className="font-tech text-white text-sm">{item.label}</p>
+                          <p className="text-xs text-cosmic-energy opacity-70">{item.description}</p>
+                        </div>
+                      </motion.a>
+                    ) : (
+                      <motion.button
+                        className="w-full flex items-center space-x-3 p-3 rounded-lg bg-cosmic-deep/30 border border-cosmic-purple/30 hover:border-yog-accent/50 transition-all duration-200 text-left"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        whileTap={{ scale: 0.98 }}
+                      >
+                        {item.icon}
+                        <div>
+                          <p className="font-tech text-white text-sm">{item.label}</p>
+                          <p className="text-xs text-cosmic-energy opacity-70">{item.description}</p>
+                        </div>
+                      </motion.button>
+                    )}
+                  </motion.div>
+                ))}
+                
+                {/* Mobile Contract Info */}
+                <div className="p-3 bg-cosmic-deep/50 border border-cosmic-purple/30 rounded-lg omniscient-glow">
+                  <p className="text-xs text-cosmic-energy opacity-70 mb-1">CONTRACT ADDRESS</p>
+                  <p className="text-xs font-tech text-yog-accent break-all">29pdPEWSUwUk941nMx3bJyNRZNG3fvmv4Rnmkz1xpump</p>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </motion.nav>
   )
