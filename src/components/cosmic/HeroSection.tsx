@@ -138,20 +138,41 @@ export function HeroSection() {
         >
           <motion.a
             href="/lore"
-            className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-yog-accent hover:bg-yog-primary border border-cosmic-purple rounded-lg font-tech text-base sm:text-lg omniscient-glow transition-all duration-300 flex items-center justify-center space-x-3 text-center"
+            className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-yog-accent hover:bg-yog-primary border border-cosmic-purple rounded-lg font-tech text-base sm:text-lg omniscient-glow transition-all duration-300 flex items-center justify-center space-x-3 text-center touch-manipulation select-none"
             whileHover={{ scale: 1.02, y: -2 }}
             whileTap={{ scale: 0.98 }}
             onClick={handleInteraction}
+            onTouchStart={(e) => {
+              handleInteraction()
+            }}
+            style={{
+              touchAction: 'manipulation',
+              WebkitTapHighlightColor: 'transparent',
+              WebkitTouchCallout: 'none',
+              WebkitUserSelect: 'none',
+              userSelect: 'none'
+            }}
           >
             <Eye className="w-5 h-5 sm:w-6 sm:h-6" />
             <span>DISCOVER THE PROPHECY</span>
           </motion.a>
 
           <motion.button
-            className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-cosmic-deep border border-yog-accent hover:border-white rounded-lg font-tech text-base sm:text-lg transition-all duration-300 flex items-center justify-center space-x-3 text-center"
+            className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-cosmic-deep border border-yog-accent hover:border-white rounded-lg font-tech text-base sm:text-lg transition-all duration-300 flex items-center justify-center space-x-3 text-center touch-manipulation select-none"
             whileHover={{ scale: 1.02, y: -2 }}
             whileTap={{ scale: 0.98 }}
             onClick={handleInteraction}
+            onTouchStart={(e) => {
+              e.preventDefault()
+              handleInteraction()
+            }}
+            style={{
+              touchAction: 'manipulation',
+              WebkitTapHighlightColor: 'transparent',
+              WebkitTouchCallout: 'none',
+              WebkitUserSelect: 'none',
+              userSelect: 'none'
+            }}
           >
             <InfinityIcon className="w-5 h-5 sm:w-6 sm:h-6" />
             <span>COMMUNE WITH YOG-SOTHOTH</span>
@@ -190,10 +211,19 @@ export function HeroSection() {
           ] as CosmicStat[]).map((stat, index) => (
             <motion.div
               key={stat.label}
-              className="p-3 sm:p-4 bg-cosmic-deep/30 border border-cosmic-purple/30 rounded-lg backdrop-blur-sm"
+              className="p-3 sm:p-4 bg-cosmic-deep/30 border border-cosmic-purple/30 rounded-lg backdrop-blur-sm cursor-pointer touch-manipulation select-none"
               whileHover={{ scale: 1.02, backgroundColor: 'rgba(139, 92, 246, 0.1)' }}
+              whileTap={{ scale: 0.98 }}
               transition={{ duration: 0.2 }}
               onClick={handleInteraction}
+              onTouchStart={(e) => {
+                e.stopPropagation()
+                handleInteraction()
+              }}
+              style={{
+                touchAction: 'manipulation',
+                WebkitTapHighlightColor: 'transparent'
+              }}
             >
               <div className="flex items-center justify-center mb-2 text-yog-accent">
                 {stat.icon}
@@ -207,7 +237,7 @@ export function HeroSection() {
         {/* Madness Revelation */}
         {showMadness && (
           <motion.div
-            className="absolute inset-0 flex items-center justify-center pointer-events-none"
+            className="fixed inset-0 flex items-center justify-center pointer-events-none z-[9999]"
             initial={{ opacity: 0 }}
             animate={{ opacity: [0, 1, 0] }}
             transition={{ duration: 3, ease: 'easeInOut' }}

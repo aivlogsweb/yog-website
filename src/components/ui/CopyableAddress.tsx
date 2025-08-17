@@ -40,9 +40,19 @@ export function CopyableAddress({
   return (
     <motion.button
       onClick={handleCopy}
-      className={`inline-flex items-center space-x-2 transition-all duration-200 hover:text-yog-accent ${className}`}
+      onTouchStart={(e) => {
+        e.stopPropagation()
+        handleCopy()
+      }}
+      className={`inline-flex items-center space-x-2 transition-all duration-200 hover:text-yog-accent touch-manipulation select-none ${className}`}
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
+      style={{
+        touchAction: 'manipulation',
+        WebkitTapHighlightColor: 'transparent',
+        WebkitUserSelect: 'none',
+        userSelect: 'none'
+      }}
     >
       <span className="font-tech break-all">
         {displayText || address}

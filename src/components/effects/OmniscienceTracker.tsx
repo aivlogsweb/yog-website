@@ -240,7 +240,7 @@ export function OmniscienceTracker() {
         <AnimatePresence>
           {state.awakening && (
             <motion.div
-              className="text-center p-8 bg-cosmic-deep/50 border border-yog-accent/50 rounded-lg backdrop-blur-sm omniscient-glow"
+              className="relative z-[9998] text-center p-8 bg-cosmic-deep/50 border border-yog-accent/50 rounded-lg backdrop-blur-sm omniscient-glow"
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
