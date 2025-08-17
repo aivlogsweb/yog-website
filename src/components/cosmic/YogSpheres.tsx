@@ -104,7 +104,10 @@ function YogSothothEntity({ position, scale, color, distort, speed }: YogSothoth
     if (eyeRef.current) {
       // Eye tracking/blinking effect
       eyeRef.current.scale.y = 1 + Math.sin(state.clock.elapsedTime * 5) * 0.1
-      eyeRef.current.material.emissiveIntensity = 0.8 + Math.sin(state.clock.elapsedTime * 3) * 0.3
+      const material = eyeRef.current.material as THREE.MeshStandardMaterial
+      if (material && material.emissiveIntensity !== undefined) {
+        material.emissiveIntensity = 0.8 + Math.sin(state.clock.elapsedTime * 3) * 0.3
+      }
     }
   })
 
