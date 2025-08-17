@@ -39,12 +39,20 @@ export function DexScreenerChart({ contractAddress }: DexScreenerChartProps) {
     
     fetchTokenData()
     
-    // Set up DexScreener embed URL - mobile optimized
-    const mobileParams = isMobile 
-      ? '&embed=1&theme=dark&trades=0&info=0&chart=1&chartLeftToolbar=0&chartTopToolbar=0&mobile=1'
-      : '&embed=1&theme=dark&trades=0&info=0&chart=1&chartLeftToolbar=0&chartTopToolbar=0'
+    // Set up DexScreener embed URL - optimized for all devices  
+    const embedParams = new URLSearchParams({
+      embed: '1',
+      theme: 'dark',
+      trades: '0',
+      info: '0', 
+      chart: '1',
+      chartLeftToolbar: '0',
+      chartTopToolbar: '0',
+      chartRightToolbar: isMobile ? '0' : '1',
+      chartBottomToolbar: '1'
+    })
     
-    setChartUrl(`https://dexscreener.com/solana/${contractAddress}?${mobileParams}`)
+    setChartUrl(`https://dexscreener.com/solana/${contractAddress}?${embedParams.toString()}`)
     
     return () => window.removeEventListener('resize', checkMobile)
   }, [contractAddress, isMobile])
@@ -274,175 +282,67 @@ export function DexScreenerChart({ contractAddress }: DexScreenerChartProps) {
                 </motion.div>
               </div>
 
-              {/* Chart Display */}
+              {/* DexScreener Chart - Responsive iframe for all devices */}
               <div className="relative h-64 sm:h-80 md:h-96 rounded-lg overflow-hidden bg-cosmic-void/50">
-                {/* Mobile: Native price experience (NO IFRAME) */}
-                {isMobile ? (
-                  <div className="w-full h-full p-6 flex flex-col justify-between">
-                    {tokenData && (
-                      <>
-                        {/* Primary Price Display */}
-                        <div className="text-center">
-                          <motion.div
-                            className="mb-6"
-                            animate={{ scale: [1, 1.02, 1] }}
-                            transition={{ duration: 3, repeat: Infinity }}
-                          >
-                            <p className="text-sm text-cosmic-energy opacity-70 mb-2 font-tech">LIVE PRICE</p>
-                            <p className="text-4xl font-tech text-white mb-3 tracking-wider">
-                              ${formatPrice(tokenData.price)}
-                            </p>
-                            <motion.p 
-                              className={`text-lg font-tech ${
-                                tokenData.priceChange24h >= 0 ? 'text-green-400' : 'text-red-400'
-                              }`}
-                              animate={{ opacity: [0.7, 1, 0.7] }}
-                              transition={{ duration: 2, repeat: Infinity }}
-                            >
-                              {tokenData.priceChange24h >= 0 ? '↗ +' : '↘ '}{Math.abs(tokenData.priceChange24h).toFixed(2)}%
-                            </motion.p>
-                          </motion.div>
-
-                          {/* Key Metrics Grid */}
-                          <div className="grid grid-cols-2 gap-4 mb-6">
-                            <div className="p-3 bg-cosmic-deep/30 rounded-lg border border-cosmic-purple/30">
-                              <p className="text-xs text-cosmic-energy opacity-70 font-tech">MARKET CAP</p>
-                              <p className="text-sm font-tech text-white">{formatNumber(tokenData.marketCap)}</p>
-                            </div>
-                            <div className="p-3 bg-cosmic-deep/30 rounded-lg border border-cosmic-purple/30">
-                              <p className="text-xs text-cosmic-energy opacity-70 font-tech">24H VOLUME</p>
-                              <p className="text-sm font-tech text-white">{formatNumber(tokenData.volume24h)}</p>
-                            </div>
-                            <div className="p-3 bg-cosmic-deep/30 rounded-lg border border-cosmic-purple/30">
-                              <p className="text-xs text-cosmic-energy opacity-70 font-tech">LIQUIDITY</p>
-                              <p className="text-sm font-tech text-white">{formatNumber(tokenData.liquidity)}</p>
-                            </div>
-                            <div className="p-3 bg-cosmic-deep/30 rounded-lg border border-cosmic-purple/30">
-                              <p className="text-xs text-cosmic-energy opacity-70 font-tech">24H TXNS</p>
-                              <p className="text-sm font-tech text-white">{tokenData.txns24h.toLocaleString()}</p>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Action Buttons */}
-                        <div className="space-y-3">
-                          <motion.a
-                            href={`https://dexscreener.com/solana/${contractAddress}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="block w-full p-4 bg-yog-primary hover:bg-yog-accent border border-cosmic-purple rounded-lg font-tech text-center transition-colors touch-manipulation"
-                            whileHover={{ scale: 1.02 }}
-                            whileTap={{ scale: 0.98 }}
-                            onClick={handleInteraction}
-                            style={{
-                              touchAction: 'manipulation',
-                              WebkitTapHighlightColor: 'transparent'
-                            }}
-                          >
-                            <div className="flex items-center justify-center space-x-2">
-                              <TrendingUp className="w-4 h-4" />
-                              <span>ADVANCED CHART</span>
-                            </div>
-                          </motion.a>
-                          
-                          <div className="grid grid-cols-2 gap-3">
-                            <motion.a
-                              href="https://jup.ag/swap/"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="p-3 bg-cosmic-deep/40 border border-cosmic-purple/30 rounded-lg font-tech text-center transition-colors text-sm touch-manipulation"
-                              whileTap={{ scale: 0.98 }}
-                              onClick={handleInteraction}
-                              style={{
-                                touchAction: 'manipulation',
-                                WebkitTapHighlightColor: 'transparent'
-                              }}
-                            >
-                              TRADE
-                            </motion.a>
-                            <motion.button
-                              className="p-3 bg-cosmic-deep/40 border border-cosmic-purple/30 rounded-lg font-tech text-sm transition-colors touch-manipulation"
-                              whileTap={{ scale: 0.98 }}
-                              onClick={() => {
-                                handleInteraction()
-                                fetchTokenData()
-                              }}
-                              style={{
-                                touchAction: 'manipulation',
-                                WebkitTapHighlightColor: 'transparent'
-                              }}
-                            >
-                              REFRESH
-                            </motion.button>
-                          </div>
-                        </div>
-                      </>
-                    )}
+                <iframe
+                  src={chartUrl}
+                  className="w-full h-full border-0"
+                  title="YOG-SOTHOTH Candlestick Chart"
+                  allow="clipboard-write"
+                  sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+                  onLoad={() => setChartLoaded(true)}
+                  onError={() => setChartError(true)}
+                  style={{
+                    filter: state.realityDistortion > 50 ? 'hue-rotate(45deg) contrast(1.2)' : 'none',
+                    minHeight: '100%',
+                    background: 'transparent'
+                  }}
+                />
+                
+                {/* Loading overlay */}
+                {!chartLoaded && !chartError && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-cosmic-void/50">
+                    <motion.div
+                      className="text-center"
+                      animate={{ opacity: [0.5, 1, 0.5] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                    >
+                      <div className="w-12 h-12 cosmic-energy rounded-full flex items-center justify-center mx-auto mb-3">
+                        <Eye className="w-6 h-6 text-cosmic-void" />
+                      </div>
+                      <p className="font-tech text-cosmic-energy text-sm">Loading candlestick chart...</p>
+                    </motion.div>
                   </div>
-                ) : (
-                  /* Desktop: Full iframe experience */
-                  <>
-                    <iframe
-                      src={chartUrl}
-                      className="w-full h-full border-0"
-                      title="YOG-SOTHOTH Price Chart"
-                      allow="clipboard-write"
-                      sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
-                      onLoad={() => setChartLoaded(true)}
-                      onError={() => setChartError(true)}
-                      style={{
-                        filter: state.realityDistortion > 50 ? 'hue-rotate(45deg) contrast(1.2)' : 'none'
-                      }}
-                    />
-                    
-                    {/* Loading overlay for iframe */}
-                    {!chartLoaded && !chartError && (
-                      <div className="absolute inset-0 flex items-center justify-center bg-cosmic-void/50">
-                        <motion.div
-                          className="text-center"
-                          animate={{ opacity: [0.5, 1, 0.5] }}
-                          transition={{ duration: 2, repeat: Infinity }}
-                        >
-                          <div className="w-12 h-12 cosmic-energy rounded-full flex items-center justify-center mx-auto mb-3">
-                            <Eye className="w-6 h-6 text-cosmic-void" />
-                          </div>
-                          <p className="font-tech text-cosmic-energy text-sm">Loading chart...</p>
-                        </motion.div>
-                      </div>
-                    )}
-                    
-                    {/* Error fallback for iframe */}
-                    {chartError && tokenData && (
-                      <div className="absolute inset-0 flex items-center justify-center bg-cosmic-void/50 p-4">
-                        <div className="text-center max-w-sm">
-                          <p className="text-red-400 mb-4 font-tech">Chart unavailable</p>
-                          <div className="p-4 bg-cosmic-deep/50 rounded-lg border border-cosmic-purple/30 mb-4">
-                            <p className="text-lg font-tech text-white mb-2">
-                              ${formatPrice(tokenData.price)}
-                            </p>
-                            <p className={`text-sm font-tech ${
-                              tokenData.priceChange24h >= 0 ? 'text-green-400' : 'text-red-400'
-                            }`}>
-                              {tokenData.priceChange24h >= 0 ? '+' : ''}{tokenData.priceChange24h.toFixed(2)}%
-                            </p>
-                          </div>
-                          <motion.a
-                            href={`https://dexscreener.com/solana/${contractAddress}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="px-4 py-2 bg-yog-primary hover:bg-yog-accent border border-cosmic-purple rounded-lg font-tech text-sm transition-colors"
-                            whileHover={{ scale: 1.05 }}
-                            onClick={handleInteraction}
-                          >
-                            VIEW ON DEXSCREENER
-                          </motion.a>
-                        </div>
-                      </div>
-                    )}
-                  </>
                 )}
                 
-                {/* Overlay effects based on cosmic state */}
+                {/* Error fallback with direct link */}
+                {chartError && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-cosmic-void/50 p-4">
+                    <div className="text-center max-w-sm">
+                      <p className="text-red-400 mb-4 font-tech">Chart temporarily unavailable</p>
+                      <motion.a
+                        href={`https://dexscreener.com/solana/${contractAddress}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-6 py-3 bg-yog-primary hover:bg-yog-accent border border-cosmic-purple rounded-lg font-tech transition-colors touch-manipulation"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={handleInteraction}
+                        style={{
+                          touchAction: 'manipulation',
+                          WebkitTapHighlightColor: 'transparent'
+                        }}
+                      >
+                        <div className="flex items-center space-x-2">
+                          <TrendingUp className="w-4 h-4" />
+                          <span>VIEW CHART ON DEXSCREENER</span>
+                        </div>
+                      </motion.a>
+                    </div>
+                  </div>
+                )}
+                
+                {/* Cosmic overlay effects */}
                 {state.awakening && (
                   <motion.div
                     className="absolute inset-0 pointer-events-none bg-gradient-to-br from-yog-accent/5 to-cosmic-purple/5"

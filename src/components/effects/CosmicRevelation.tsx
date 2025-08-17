@@ -1,23 +1,26 @@
 'use client'
 
+import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useCosmic } from '../cosmic/CosmicProvider'
+import { X } from 'lucide-react'
 
 export function CosmicRevelation() {
   const { state } = useCosmic()
+  const [showOmniscienceDialog, setShowOmniscienceDialog] = useState(true)
 
   return (
     <AnimatePresence>
       {/* Critical omniscience revelations - always on top */}
-      {state.omniscienceLevel >= 100 && (
+      {state.omniscienceLevel >= 100 && showOmniscienceDialog && (
         <motion.div
-          className="fixed inset-0 flex items-center justify-center pointer-events-none z-[9999]"
+          className="fixed inset-0 flex items-center justify-center pointer-events-auto z-[9999] bg-black/50"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >
           <motion.div
-            className="bg-cosmic-void/90 border-2 border-yog-accent rounded-lg p-8 mx-4 backdrop-blur-md max-w-md text-center"
+            className="bg-cosmic-void/95 border-2 border-yog-accent rounded-lg p-8 mx-4 backdrop-blur-md max-w-md text-center relative"
             initial={{ scale: 0.8, y: 50 }}
             animate={{ scale: 1, y: 0 }}
             exit={{ scale: 0.8, y: 50 }}
@@ -25,6 +28,20 @@ export function CosmicRevelation() {
               boxShadow: '0 0 50px rgba(139, 92, 246, 0.5), inset 0 0 30px rgba(139, 92, 246, 0.1)'
             }}
           >
+            {/* Close button */}
+            <motion.button
+              className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full border border-cosmic-purple/50 hover:border-yog-accent/50 transition-colors touch-manipulation"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={() => setShowOmniscienceDialog(false)}
+              style={{
+                touchAction: 'manipulation',
+                WebkitTapHighlightColor: 'transparent'
+              }}
+            >
+              <X className="w-4 h-4 text-cosmic-energy hover:text-yog-accent" />
+            </motion.button>
+
             <motion.h2
               className="text-2xl font-bold horror-text mb-4"
               animate={{
@@ -49,15 +66,32 @@ export function CosmicRevelation() {
               The digital god now sees through your eyes.
             </motion.p>
             
-            <motion.div
-              className="flex items-center justify-center space-x-2"
-              animate={{ scale: [1, 1.05, 1] }}
+            {/* Dismissible button */}
+            <motion.button
+              className="w-full py-4 px-6 bg-yog-primary hover:bg-yog-accent border border-cosmic-purple rounded-lg font-tech transition-colors touch-manipulation"
+              animate={{ 
+                scale: [1, 1.02, 1],
+                boxShadow: [
+                  '0 0 10px rgba(139, 92, 246, 0.3)',
+                  '0 0 20px rgba(139, 92, 246, 0.6)',
+                  '0 0 10px rgba(139, 92, 246, 0.3)'
+                ]
+              }}
               transition={{ duration: 2, repeat: Infinity }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => setShowOmniscienceDialog(false)}
+              style={{
+                touchAction: 'manipulation',
+                WebkitTapHighlightColor: 'transparent'
+              }}
             >
-              <div className="w-3 h-3 bg-yog-accent rounded-full" />
-              <span className="text-sm font-tech text-yog-accent">ENLIGHTENMENT COMPLETE</span>
-              <div className="w-3 h-3 bg-yog-accent rounded-full" />
-            </motion.div>
+              <div className="flex items-center justify-center space-x-3">
+                <div className="w-3 h-3 bg-yog-accent rounded-full" />
+                <span className="text-sm text-white font-bold">ENLIGHTENMENT COMPLETE</span>
+                <div className="w-3 h-3 bg-yog-accent rounded-full" />
+              </div>
+            </motion.button>
           </motion.div>
         </motion.div>
       )}

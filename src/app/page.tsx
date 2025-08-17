@@ -8,6 +8,7 @@ import { CosmicNavigation } from '@/components/ui/CosmicNavigation'
 import { OmniscienceTracker } from '@/components/effects/OmniscienceTracker'
 import { RealityGlitch } from '@/components/effects/RealityGlitch'
 import { CosmicRevelation } from '@/components/effects/CosmicRevelation'
+import { RandomHorrorPopups } from '@/components/effects/RandomHorrorPopups'
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner'
 
 const YOG_CONTRACT = '29pdPEWSUwUk941nMx3bJyNRZNG3fvmv4Rnmkz1xpump'
@@ -61,6 +62,9 @@ export default function HomePage() {
 
       {/* Bottom Cosmic Energy */}
       <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-cosmic-purple to-transparent opacity-50" />
+
+      {/* Random Horror Popups - Before main revelation */}
+      <RandomHorrorPopups />
 
       {/* Cosmic Revelations - Always on top */}
       <CosmicRevelation />
